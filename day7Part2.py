@@ -1,4 +1,4 @@
-from collections import defaultdict
+
 
 def parse_data(path):
     grid = []
@@ -12,21 +12,20 @@ def parse_data(path):
 
 def count_timelines(grid): 
     start_column = grid[0].index('S')
-    beams = defaultdict(int)
+    beams = {}
     beams[start_column] = 1
 
     for row in grid[1:]:
-        new = defaultdict(int)
+        new = {}
         for c, count in beams.items():
             if row[c] == '^':
-                new[c-1] += count
-                new[c+1] += count
-                  
+                new[c-1] = new.get(c-1, 0) + count
+                new[c+1] = new.get(c+1, 0) + count
             else:
-                new[c] += count
+                new[c] = new.get(c, 0) + count
         beams = new
-    
-    res = sum(beams.values())
+        
+        res = sum(beams.values())
     return res
 
 
